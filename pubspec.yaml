@@ -1,0 +1,104 @@
+name: esl
+description: "ESL Mobile App"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ">=3.8.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Networking
+  dio: ^5.8.0+1
+  dio_cookie_manager: ^3.2.0
+  cookie_jar: ^4.0.8
+  socket_io_client: ^3.1.2
+
+  # State Management
+  flutter_bloc: ^9.1.1
+
+  # Routing
+  go_router: ^16.0.0
+
+  # Local Storage
+  floor:
+    git:
+      url: https://github.com/daveragos/floor_ce.git
+      path: floor
+      ref: main
+  sqflite: ^2.4.2
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+  injectable: ^2.5.0
+  get_it: ^8.0.3
+  connectivity_plus: ^6.1.4
+  mockito: ^5.4.6
+  equatable: ^2.0.7
+  internet_connection_checker: ^3.0.1
+  pinput: ^5.0.1
+  dots_indicator: ^4.0.1
+  flutter_native_splash: ^2.4.6
+  intl: ^0.19.0
+  flutter_svg: ^2.1.0
+  fpdart: ^1.1.1
+  pretty_dio_logger: ^1.4.0
+  form_validation: ^3.2.0
+  flutter_secure_storage: ^9.0.0
+  path_provider: ^2.1.5
+  google_sign_in: ^6.3.0
+  shared_preferences: ^2.5.3
+  skeletonizer: ^2.0.1
+  mobile_scanner: ^7.0.1
+  flutter_lexical_reader: ^1.1.17
+  file_picker: ^10.2.0
+  cupertino_icons: ^1.0.8
+  fluentui_system_icons: ^1.1.273
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.15
+  freezed: ^3.0.6
+  json_serializable: ^6.9.5
+  injectable_generator: ^2.7.0
+  floor_generator:
+    git:
+      url: https://github.com/daveragos/floor_ce.git
+      path: floor_generator
+      ref: main
+  lint: ^2.8.0
+  flutter_gen_runner: ^5.10.0
+  bloc_lint: ^0.2.0-dev
+  bloc_test: ^10.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/
+
+  
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo.png
+  branding: assets/powered_by_koket_light.png
+  color_dark: "#000000"
+  image_dark: assets/logo.png
+  branding_dark: assets/powered_by_koket_dark.png
+  branding_bottom_padding: 24
+
+  android_12:
+    image: assets/logo12light.png
+    color: "#ffffff"
+    color_dark: "#000000"
+    icon_background_color: "#ffffff"
+    image_dark: assets/logo12dark.png
+    icon_background_color_dark: "#000000"
+    branding: assets/powered_by_koket_light.png
+    branding_dark: assets/powered_by_koket_dark.png
+    branding_bottom_padding: 24
+
+  web: false
