@@ -22,49 +22,45 @@ class ProgramDetailCard extends StatelessWidget {
   final int? passPoint;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            color: AppConstants.eslGreyText,
-            height: 250,
-            child: Center(
-              child: Image.asset(
-                color: AppConstants.eslGrey,
-                height: 100,
-                AppConstants.engHorizontalGrey$GreyLOGO,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          color: AppConstants.eslGreyText,
+          height: 250,
+          child: Center(
+            child: Image.asset(
+              color: AppConstants.eslGrey,
+              height: 100,
+              AppConstants.engHorizontalGrey$GreyLOGO,
             ),
           ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+        ),
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildInfoBox(
+              icon: FluentIcons.hat_graduation_12_filled,
+              label: '${passPoint.toString()}%',
+              suffix: '-Pass Point',
+            ),
+            if (passPoint != null)
               _buildInfoBox(
-                icon: FluentIcons.hat_graduation_12_filled,
-                label: '${passPoint.toString()}%',
-                suffix: '-Pass Point',
+                icon: FluentIcons.wallet_16_filled,
+                label: price,
+                suffix: 'USD',
               ),
-              if (passPoint != null)
-                _buildInfoBox(
-                  icon: FluentIcons.wallet_16_filled,
-                  label: price,
-                  suffix: 'USD',
-                ),
-            ],
-          ),
-          if (description != null) ...[
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 700,
-              child: LexicalDescriptionView(description: description),
-            ),
           ],
+        ),
+        if (description != null) ...[
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 700,
+            child: LexicalDescriptionView(description: description),
+          ),
         ],
-      ),
+      ],
     );
   }
 

@@ -18,6 +18,7 @@ class ReqCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      borderOnForeground: false,
       elevation: 0.2,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: Column(

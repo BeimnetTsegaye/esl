@@ -60,7 +60,25 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
 
             return Scaffold(
               appBar: AppBar(
-                title: const Text('Program Details'),
+                title: Row(
+                  children: [
+                    Text(
+                      '${selectedProgram?.programCode ?? 'Program Code'}-',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Text(
+                      selectedProgram?.name ?? 'Program Name',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+
                 actions: [
                   if (!hasApplied)
                     TextButton(
@@ -75,7 +93,7 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
                 ],
               ),
               body: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: ListView(
                   shrinkWrap: true,
                   children: [

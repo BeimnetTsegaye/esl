@@ -85,7 +85,6 @@ class ProgramDetailSheet extends StatelessWidget {
   }
 
   static void show({required BuildContext context, required Program program}) {
-    // Format the description to match Lexical JSON structure if it's a string
     Map<String, dynamic>? formattedDescription;
     if (program.description != null) {
       if (program.description is String) {

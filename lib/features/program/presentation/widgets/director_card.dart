@@ -24,7 +24,7 @@ class DirectorCard extends StatelessWidget {
         children: [
           Container(
             width: 90,
-            height: 130,
+            height: 120,
             // padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 205, 201, 201),
@@ -35,14 +35,14 @@ class DirectorCard extends StatelessWidget {
               color: AppConstants.eslGrey,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 10),
 
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
                     'Capt. $name',
                     style: boldTextStyle.copyWith(
