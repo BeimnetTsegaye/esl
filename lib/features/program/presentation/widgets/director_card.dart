@@ -16,38 +16,43 @@ class DirectorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 1,
-      child: Column(
-        spacing: 10,
+    return Container(
+      decoration: BoxDecoration(color: AppConstants.eslGreyTint),
+      // padding: const EdgeInsets.all(12),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: double.infinity,
-            height: 150,
-            padding: const EdgeInsets.all(20),
+            width: 90,
+            height: 130,
+            // padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: currentThemeNotifier.value == lightMode
-                  ? AppConstants.eslGreyTint
-                  : AppConstants.eslDarkGreyTint,
+              color: const Color.fromARGB(255, 205, 201, 201),
             ),
-            child: Image.asset(AppConstants.engHorizontalGrey$GreyLOGO),
+            child: Image.asset(
+              AppConstants.engHorizontalGrey$GreyLOGO,
+              fit: BoxFit.contain,
+              color: AppConstants.eslGrey,
+            ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12),
+          const SizedBox(width: 16),
+
+          Expanded(
             child: Column(
-              spacing: 10,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: boldTextStyle.copyWith(
-                    color: AppConstants.eslGreen,
-                    fontSize: 20,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Capt. $name',
+                    style: boldTextStyle.copyWith(
+                      fontSize: 20,
+                      color: AppConstants.eslGreen,
+                    ),
                   ),
                 ),
-                Text(title, style: boldTextStyle.copyWith(fontSize: 16)),
-                Text(description),
+                const SizedBox(height: 4),
+                Text(description, maxLines: 3, overflow: TextOverflow.ellipsis),
               ],
             ),
           ),

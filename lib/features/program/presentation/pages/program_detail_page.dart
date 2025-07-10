@@ -10,7 +10,6 @@ import 'package:esl/features/program/presentation/widgets/course_card.dart';
 import 'package:esl/features/program/presentation/widgets/director_card.dart';
 import 'package:esl/features/program/presentation/widgets/program_detail_card.dart';
 import 'package:esl/features/program/presentation/widgets/req_card.dart';
-import 'package:esl/features/program/presentation/widgets/program_detail_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -61,12 +60,7 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
 
             return Scaffold(
               appBar: AppBar(
-                title: Row(
-                  children: [
-                    Text(selectedProgram?.programCode ?? 'Program Details'),
-                    Text(selectedProgram?.name ?? 'Program Details'),
-                  ],
-                ),
+                title: const Text('Program Details'),
                 actions: [
                   if (!hasApplied)
                     TextButton(
@@ -80,107 +74,116 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
                     ),
                 ],
               ),
-              body: ListView(
-                padding: const EdgeInsets.all(16),
-                children: [
-                  ProgramDetailCard(
-                    title: selectedProgram?.name ?? 'Program Name',
-                    price: selectedProgram?.price ?? 'Price not available',
-                    description: parseDescription(selectedProgram?.description),
-                    onViewDetails: selectedProgram != null
-                        ? () {
-                            ProgramDetailSheet.show(
-                              context: context,
-                              program: selectedProgram!,
-                            );
-                          }
-                        : null,
-                  ),
-                  const SizedBox(height: 20),
+              body: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    ProgramDetailCard(
+                      title: selectedProgram?.name ?? 'Program Name',
+                      price: selectedProgram?.price ?? 'Price not available',
+                      passPoint: selectedProgram?.passPoint ?? null,
 
-                  // Director section (if director info is available)
-                  if (selectedProgram?.directorId != null) ...[
-                    Text(
-                      'Director',
-                      style: boldTextStyle.copyWith(fontSize: 20),
-                    ),
-                    DirectorCard(
-                      name:
-                          selectedProgram?.director?.user?.firstName ??
-                          'Director',
-                      title: selectedProgram?.director?.title ?? 'Director',
-                      description:
-                          selectedProgram?.director?.description ??
-                          'No description available',
+                      description: parseDescription(
+                        selectedProgram?.description,
+                      ),
                     ),
                     const SizedBox(height: 20),
-                  ],
 
-                  // Courses section
-                  if (selectedProgram?.courses?.isNotEmpty ?? false) ...[
-                    Text(
-                      'Courses',
-                      style: boldTextStyle.copyWith(fontSize: 20),
-                    ),
-                    const SizedBox(height: 10),
-                    ...(selectedProgram?.courses ?? [])
-                        .map(
-                          (course) => Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: CourseCard(
-                              title: course.title ?? 'Course Name',
-                              duration: course.duration ?? '',
-                              description: course.description ?? {},
+                    if (selectedProgram?.directorId != null) ...[
+                      Text(
+                        'Director',
+                        style: boldTextStyle.copyWith(fontSize: 23),
+                      ),
+                      const SizedBox(height: 20),
+
+                      DirectorCard(
+                        name:
+                            selectedProgram?.director?.user?.firstName ??
+                            'Director',
+                        title: selectedProgram?.director?.title ?? 'Director',
+                        description:
+                            selectedProgram?.director?.description ??
+                            'No description available',
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+
+                    // Courses section
+                    if (selectedProgram?.courses?.isNotEmpty ?? false) ...[
+                      Text(
+                        'Courses',
+                        style: boldTextStyle.copyWith(fontSize: 23),
+                      ),
+                      const SizedBox(height: 20),
+                      ...(selectedProgram?.courses ?? [])
+                          .map(
+                            (course) => Column(
+                              children: [
+                                CourseCard(
+                                  title: course.title ?? 'Course Name',
+                                  duration: course.duration ?? '',
+                                  description:
+                                      parseDescription(course.description) ??
+                                      {},
+                                ),
+                                const SizedBox(height: 10),
+                              ],
                             ),
-                          ),
-                        )
-                        .toList(),
+                          )
+                          .toList(),
+                      const SizedBox(height: 20),
+                    ],
 
-                    const SizedBox(height: 20),
-                  ],
-
-                  // Eligibility Criteria section
-                  if (selectedProgram?.eligibilityCriteria?.isNotEmpty ??
-                      false) ...[
-                    Text(
-                      'Eligibility Criteria',
-                      style: boldTextStyle.copyWith(fontSize: 20),
-                    ),
-                    const SizedBox(height: 20),
-                    ...(selectedProgram?.eligibilityCriteria ?? []).map(
-                      (criteria) => Column(
-                        children: [
-                          BulletText(
-                            text: criteria.title ?? 'No criteria description',
-                          ),
-                          const SizedBox(height: 10),
-                        ],
+                    // Eligibility Criteria section
+                    if (selectedProgram?.eligibilityCriteria?.isNotEmpty ??
+                        false) ...[
+                      Text(
+                        'Eligibility Criteria',
+                        style: boldTextStyle.copyWith(fontSize: 23),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                      const SizedBox(height: 20),
+                      ...(selectedProgram?.eligibilityCriteria ?? [])
+                          .map(
+                            (criteria) => Column(
+                              children: [
+                                BulletText(
+                                  text:
+                                      criteria.title ??
+                                      'No criteria description',
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                      const SizedBox(height: 20),
+                    ],
 
-                  // Required Documents section
-                  if (selectedProgram?.requiredDocuments?.isNotEmpty ??
-                      false) ...[
-                    Text(
-                      'Required Documents',
-                      style: boldTextStyle.copyWith(fontSize: 20),
-                    ),
-                    const SizedBox(height: 20),
-                    ...(selectedProgram?.requiredDocuments ?? []).map(
-                      (doc) => Column(
-                        children: [
-                          ReqCard(
-                            title: doc.name ?? 'Document Name',
-                            description: doc.description ?? {},
-                          ),
-                          const SizedBox(height: 20),
-                        ],
+                    // Required Documents section
+                    if (selectedProgram?.requiredDocuments?.isNotEmpty ??
+                        false) ...[
+                      Text(
+                        'Required Documents',
+                        style: boldTextStyle.copyWith(fontSize: 20),
                       ),
-                    ),
+                      const SizedBox(height: 20),
+                      ...(selectedProgram?.requiredDocuments ?? [])
+                          .map(
+                            (doc) => Column(
+                              children: [
+                                ReqCard(
+                                  title: doc.name ?? 'Document Name',
+                                  description: doc.description ?? {},
+                                ),
+                                const SizedBox(height: 20),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ],
                   ],
-                ],
+                ),
               ),
             );
           },
@@ -188,16 +191,16 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
       },
     );
   }
-}
 
-Map<String, dynamic>? parseDescription(dynamic desc) {
-  if (desc == null) return null;
-  if (desc is Map<String, dynamic>) return desc;
-  if (desc is String && desc.isNotEmpty) {
-    try {
-      final decoded = jsonDecode(desc);
-      if (decoded is Map<String, dynamic>) return decoded;
-    } catch (_) {}
+  Map<String, dynamic>? parseDescription(dynamic desc) {
+    if (desc == null) return null;
+    if (desc is Map<String, dynamic>) return desc;
+    if (desc is String && desc.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(desc);
+        if (decoded is Map<String, dynamic>) return decoded;
+      } catch (_) {}
+    }
+    return null;
   }
-  return null;
 }

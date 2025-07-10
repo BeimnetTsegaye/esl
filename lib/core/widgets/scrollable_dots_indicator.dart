@@ -56,17 +56,17 @@ class ScrollableDotsIndicator extends StatelessWidget {
   int _calculateStartIndex() {
     final maxStartIndex = dotsCount - visibleDots;
     final currentPosition = position.round();
-    
+
     // If current position is in the first visibleDots, start from 0
     if (currentPosition < visibleDots) {
       return 0;
     }
-    
+
     // If current position is in the last visibleDots, start from maxStartIndex
     if (currentPosition >= maxStartIndex) {
       return maxStartIndex;
     }
-    
+
     // Otherwise, center the current position
     return currentPosition - (visibleDots ~/ 2);
   }
@@ -85,4 +85,4 @@ class ScrollableDotsIndicator extends StatelessWidget {
       ),
     );
   }
-} 
+}

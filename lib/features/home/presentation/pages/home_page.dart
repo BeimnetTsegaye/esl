@@ -531,46 +531,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    // const SizedBox(height: 10),
-                    //download academic calendar
                     const SizedBox(height: 10),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        right: 8,
-                        left: 8,
-                        top: 8,
-                        bottom: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: currentThemeNotifier.value == lightMode
-                            ? AppConstants.eslGreyTint
-                            : AppConstants.eslDarkGreyTint,
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Download Academic Calendar',
-                              style: boldTextStyle,
-                            ),
-                            const Text(
-                              'Get the latest updates on academic events, holidays, and important dates.',
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'Download Now',
-                                style: boldTextStyle,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    //announcments
                     BlocBuilder<AnnouncmentBloc, AnnouncmentState>(
                       builder: (context, state) {
                         if (state is AnnouncmentLoading) {
@@ -609,60 +570,55 @@ class _HomePageState extends State<HomePage> {
                           if (state.announcments.isEmpty) {
                             return const SizedBox.shrink();
                           }
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  height: 150,
-                                  child: PageView.builder(
-                                    onPageChanged: (value) => setState(() {
-                                      announcementDotsPosition = value
-                                          .toDouble();
-                                    }),
-                                    itemCount: state.announcments.length,
-                                    itemBuilder: (context, index) {
-                                      final ad = state.announcments[index];
-                                      return AdBanner(
-                                        adTitle: ad.title ?? '',
-                                        adDescription: ad.description ?? '',
-                                        onPressed: () {},
-                                        onClose: () {
-                                          context.read<AnnouncmentBloc>().add(
-                                            RemoveAnnouncmentEvent(index),
-                                          );
-                                          // Adjust dots position if needed
-                                          if (state.announcments.length > 1) {
-                                            setState(() {
-                                              announcementDotsPosition =
-                                                  announcementDotsPosition
-                                                      .clamp(
-                                                        0,
-                                                        state
-                                                                .announcments
-                                                                .length -
-                                                            2,
-                                                      )
-                                                      .toDouble();
-                                            });
-                                          } else {
-                                            setState(() {
-                                              announcementDotsPosition = 0;
-                                            });
-                                          }
-                                        },
-                                      );
-                                    },
-                                  ),
+                          return Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: 130,
+                                child: PageView.builder(
+                                  onPageChanged: (value) => setState(() {
+                                    announcementDotsPosition = value.toDouble();
+                                  }),
+                                  itemCount: state.announcments.length,
+                                  itemBuilder: (context, index) {
+                                    final ad = state.announcments[index];
+                                    return AdBanner(
+                                      adTitle: ad.title ?? '',
+                                      adDescription: ad.description ?? '',
+                                      onPressed: () {},
+                                      onClose: () {
+                                        context.read<AnnouncmentBloc>().add(
+                                          RemoveAnnouncmentEvent(index),
+                                        );
+                                        if (state.announcments.length > 1) {
+                                          setState(() {
+                                            announcementDotsPosition =
+                                                announcementDotsPosition
+                                                    .clamp(
+                                                      0,
+                                                      state
+                                                              .announcments
+                                                              .length -
+                                                          2,
+                                                    )
+                                                    .toDouble();
+                                          });
+                                        } else {
+                                          setState(() {
+                                            announcementDotsPosition = 0;
+                                          });
+                                        }
+                                      },
+                                    );
+                                  },
                                 ),
-                                const SizedBox(height: 10),
-                                ScrollableDotsIndicator(
-                                  dotsCount: state.announcments.length,
-                                  position: announcementDotsPosition,
-                                ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 10),
+                              ScrollableDotsIndicator(
+                                dotsCount: state.announcments.length,
+                                position: announcementDotsPosition,
+                              ),
+                            ],
                           );
                         } else if (state is AnnouncmentEmpty) {
                           return const SizedBox.shrink();
@@ -682,65 +638,65 @@ class _HomePageState extends State<HomePage> {
                         }
                       },
                     ),
-                    // //news
-                    // SeeAllTitle(title: 'News', onPressed: () {}),
-                    // const SizedBox(height: 10),
-                    // BlocBuilder<NewsBloc, NewsState>(
-                    //   builder: (context, state) {
-                    //     if (state is NewsLoading) {
-                    //       newsError = false;
-                    //       return Skeletonizer(
-                    //         child: NewsTile(
-                    //           title: state.fakeNews.title ?? '',
-                    //           excerpt: state.fakeNews.viewsCount.toString(),
-                    //           imageUrl: state.fakeNews.featuredImage ?? '',
-                    //           onPressed: () {},
-                    //         ),
-                    //       );
-                    //     } else if (state is NewsLoaded) {
-                    //       newsError = false;
-                    //       return Column(
-                    //         spacing: 10,
-                    //         children: state.newsList.map((news) {
-                    //           return NewsTile(
-                    //             title: news.title ?? '',
-                    //             excerpt: news.excerpt ?? '',
-                    //             imageUrl: news.featuredImage ?? '',
-                    //             onPressed: () => context.push(
-                    //               AppConstants.newsDetailsRoute,
-                    //               extra: news,
-                    //             ),
-                    //           );
-                    //         }).toList(),
-                    //       );
-                    //     } else if (state is NewsEmpty) {
-                    //       newsError = false;
-                    //       return const Padding(
-                    //         padding: EdgeInsets.all(16.0),
-                    //         child: Text(
-                    //           'No news available',
-                    //           style: TextStyle(fontSize: 16),
-                    //         ),
-                    //       );
-                    //     } else if (state is NewsError) {
-                    //       newsError = true;
-                    //       if (!allFailed) {
-                    //         return Padding(
-                    //           padding: const EdgeInsets.all(16.0),
-                    //           child: ConnectionErrorWidget(
-                    //             message: state.message,
-                    //             onRetry: _refreshData,
-                    //           ),
-                    //         );
-                    //       } else {
-                    //         return const SizedBox.shrink();
-                    //       }
-                    //     } else {
-                    //       return const SizedBox.shrink();
-                    //     }
-                    //   },
-                    // ),
-                    // const SizedBox(height: 50),
+                    //news
+                    SeeAllTitle(title: 'News', onPressed: () {}),
+                    const SizedBox(height: 10),
+                    BlocBuilder<NewsBloc, NewsState>(
+                      builder: (context, state) {
+                        if (state is NewsLoading) {
+                          newsError = false;
+                          return Skeletonizer(
+                            child: NewsTile(
+                              title: state.fakeNews.title ?? '',
+                              excerpt: state.fakeNews.viewsCount.toString(),
+                              imageUrl: state.fakeNews.featuredImage ?? '',
+                              onPressed: () {},
+                            ),
+                          );
+                        } else if (state is NewsLoaded) {
+                          newsError = false;
+                          return Column(
+                            spacing: 10,
+                            children: state.newsList.map((news) {
+                              return NewsTile(
+                                title: news.title ?? '',
+                                excerpt: news.excerpt ?? '',
+                                imageUrl: news.featuredImage ?? '',
+                                onPressed: () => context.push(
+                                  AppConstants.newsDetailsRoute,
+                                  extra: news,
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        } else if (state is NewsEmpty) {
+                          newsError = false;
+                          return const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(
+                              'No news available',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          );
+                        } else if (state is NewsError) {
+                          newsError = true;
+                          if (!allFailed) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: ConnectionErrorWidget(
+                                message: state.message,
+                                onRetry: _refreshData,
+                              ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),

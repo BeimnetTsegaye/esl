@@ -1,104 +1,104 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
+
 import 'package:esl/core/shared/constants.dart';
 import 'package:esl/core/theme/app_theme.dart';
-import 'package:flutter/material.dart';
+import 'package:esl/features/program/presentation/widgets/lexical_description_view.dart';
 
 class ProgramDetailCard extends StatelessWidget {
   const ProgramDetailCard({
-    super.key,
+    Key? key,
     required this.title,
     required this.price,
     this.description,
-    this.onViewDetails,
-  });
+    required this.passPoint,
+  }) : super(key: key);
 
   final String title;
+
   final String price;
   final Map<String, dynamic>? description;
-  final VoidCallback? onViewDetails;
-
+  final int? passPoint;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppConstants.eslGreyText),
-      ),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: boldTextStyle.copyWith(fontSize: 20)),
-          Text(
-            '\$${price.replaceAll(RegExp(r'[^\d.]'), '')}',
-            style: boldTextStyle.copyWith(
-              color: AppConstants.eslGreen,
-              fontSize: 20,
+          Container(
+            color: AppConstants.eslGreyText,
+            height: 250,
+            child: Center(
+              child: Image.asset(
+                color: AppConstants.eslGrey,
+                height: 100,
+                AppConstants.engHorizontalGrey$GreyLOGO,
+              ),
             ),
           ),
-          if (description != null) ...[
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: TextButton.icon(
-                onPressed: onViewDetails,
-                style: TextButton.styleFrom(
-                  foregroundColor: const Color(0xFF3A006C),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    side: const BorderSide(color: Color(0xFF3A006C)),
-                  ),
-                ),
-                icon: const Icon(Icons.info_outline, size: 20),
-                label: const Text('View Details'),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildInfoBox(
+                icon: FluentIcons.hat_graduation_12_filled,
+                label: '${passPoint.toString()}%',
+                suffix: '-Pass Point',
               ),
+              if (passPoint != null)
+                _buildInfoBox(
+                  icon: FluentIcons.wallet_16_filled,
+                  label: price,
+                  suffix: 'USD',
+                ),
+            ],
+          ),
+          if (description != null) ...[
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 700,
+              child: LexicalDescriptionView(description: description),
             ),
           ],
         ],
       ),
     );
   }
+
+  Widget _buildInfoBox({
+    required IconData icon,
+    required String label,
+    required String suffix,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      height: 40,
+      width: 180,
+      decoration: BoxDecoration(
+        color: AppConstants.eslGreyText,
+        // borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: AppConstants.eslGreen, size: 25),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: boldTextStyle.copyWith(
+              fontSize: 15,
+              color: AppConstants.eslGrey,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            suffix,
+            style: boldTextStyle.copyWith(color: AppConstants.eslGrey),
+          ),
+        ],
+      ),
+    );
+  }
 }
-// import 'package:esl/core/shared/constants.dart';
-// import 'package:esl/core/theme/app_theme.dart';
-// import 'package:esl/features/program/presentation/widgets/lexical_description_view.dart';
-// import 'package:flutter/material.dart';
-
-// class ProgramDetailCard extends StatelessWidget {
-//   const ProgramDetailCard({
-//     super.key,
-//     required this.title,
-//     required this.price,
-//     this.description,
-//   });
-
-//   final String title;
-//   final String price;
-//   final Map<String, dynamic>? description;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.all(12),
-//       decoration: BoxDecoration(
-//         border: Border.all(color: AppConstants.eslGreyText),
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(title, style: boldTextStyle.copyWith(fontSize: 20)),
-//           Text(
-//             price,
-//             style: boldTextStyle.copyWith(color: AppConstants.eslGreen),
-//           ),
-//           if (description != null) ...[
-//             const SizedBox(height: 10),
-//             SizedBox(
-//               height: 200,
-//               child: LexicalDescriptionView(description: description),
-//             ),
-//           ],
-//         ],
-//       ),
-//     );
-//   }
-// }
