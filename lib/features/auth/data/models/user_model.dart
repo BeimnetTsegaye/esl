@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
-import 'package:esl/features/auth/domain/entities/user.dart';
 import 'package:floor/floor.dart';
+
+import 'package:esl/features/auth/domain/entities/user.dart';
 
 @entity
 class UserModel extends Equatable {
@@ -11,7 +13,8 @@ class UserModel extends Equatable {
   final String? email;
   final String? phoneNumber;
   final String? role;
-
+  final String? token; // ✅ Add this
+  final String? profilePicture;
   const UserModel({
     required this.id,
     required this.firstName,
@@ -19,6 +22,8 @@ class UserModel extends Equatable {
     required this.email,
     required this.phoneNumber,
     required this.role,
+    this.token,
+    required this.profilePicture,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -28,6 +33,7 @@ class UserModel extends Equatable {
     email: json['email'] as String? ?? '',
     phoneNumber: json['phoneNumber'] as String? ?? '',
     role: json['role'] as String? ?? '',
+    profilePicture: json['profilePicture'] as String? ?? '',
   );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +43,7 @@ class UserModel extends Equatable {
     'email': email,
     'phoneNumber': phoneNumber,
     'role': role,
+    'profilePicture': profilePicture,
   };
 
   factory UserModel.fromEntity(User user) {
@@ -47,6 +54,7 @@ class UserModel extends Equatable {
       email: user.email,
       phoneNumber: user.phoneNumber,
       role: user.role,
+      profilePicture: user.profilePicture,
     );
   }
 
@@ -58,6 +66,7 @@ class UserModel extends Equatable {
       email: email ?? '',
       phoneNumber: phoneNumber ?? '',
       role: role ?? '',
+      profilePicture: '',
     );
   }
 

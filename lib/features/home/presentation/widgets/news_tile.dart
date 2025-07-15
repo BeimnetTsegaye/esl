@@ -15,7 +15,7 @@ class NewsTile extends StatelessWidget {
   final String excerpt;
   final String? imageUrl;
   final VoidCallback? onPressed;
-
+ 
   @override
   Widget build(BuildContext context) {
     return ListTile(

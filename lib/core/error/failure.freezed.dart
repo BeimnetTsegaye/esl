@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -72,6 +71,154 @@ as String?,
 
 }
 
+
+/// Adds pattern-matching-related methods to [Failure].
+extension FailurePatterns on Failure {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ServerFailure value)?  serverFailure,TResult Function( CacheFailure value)?  cacheFailure,TResult Function( NetworkFailure value)?  networkFailure,TResult Function( UnexpectedFailure value)?  unexpectedFailure,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case ServerFailure() when serverFailure != null:
+return serverFailure(_that);case CacheFailure() when cacheFailure != null:
+return cacheFailure(_that);case NetworkFailure() when networkFailure != null:
+return networkFailure(_that);case UnexpectedFailure() when unexpectedFailure != null:
+return unexpectedFailure(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ServerFailure value)  serverFailure,required TResult Function( CacheFailure value)  cacheFailure,required TResult Function( NetworkFailure value)  networkFailure,required TResult Function( UnexpectedFailure value)  unexpectedFailure,}){
+final _that = this;
+switch (_that) {
+case ServerFailure():
+return serverFailure(_that);case CacheFailure():
+return cacheFailure(_that);case NetworkFailure():
+return networkFailure(_that);case UnexpectedFailure():
+return unexpectedFailure(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ServerFailure value)?  serverFailure,TResult? Function( CacheFailure value)?  cacheFailure,TResult? Function( NetworkFailure value)?  networkFailure,TResult? Function( UnexpectedFailure value)?  unexpectedFailure,}){
+final _that = this;
+switch (_that) {
+case ServerFailure() when serverFailure != null:
+return serverFailure(_that);case CacheFailure() when cacheFailure != null:
+return cacheFailure(_that);case NetworkFailure() when networkFailure != null:
+return networkFailure(_that);case UnexpectedFailure() when unexpectedFailure != null:
+return unexpectedFailure(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String? message,  Map<String, dynamic>? errorDetails)?  serverFailure,TResult Function( String? message)?  cacheFailure,TResult Function( String? message)?  networkFailure,TResult Function( String? message)?  unexpectedFailure,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case ServerFailure() when serverFailure != null:
+return serverFailure(_that.message,_that.errorDetails);case CacheFailure() when cacheFailure != null:
+return cacheFailure(_that.message);case NetworkFailure() when networkFailure != null:
+return networkFailure(_that.message);case UnexpectedFailure() when unexpectedFailure != null:
+return unexpectedFailure(_that.message);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String? message,  Map<String, dynamic>? errorDetails)  serverFailure,required TResult Function( String? message)  cacheFailure,required TResult Function( String? message)  networkFailure,required TResult Function( String? message)  unexpectedFailure,}) {final _that = this;
+switch (_that) {
+case ServerFailure():
+return serverFailure(_that.message,_that.errorDetails);case CacheFailure():
+return cacheFailure(_that.message);case NetworkFailure():
+return networkFailure(_that.message);case UnexpectedFailure():
+return unexpectedFailure(_that.message);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String? message,  Map<String, dynamic>? errorDetails)?  serverFailure,TResult? Function( String? message)?  cacheFailure,TResult? Function( String? message)?  networkFailure,TResult? Function( String? message)?  unexpectedFailure,}) {final _that = this;
+switch (_that) {
+case ServerFailure() when serverFailure != null:
+return serverFailure(_that.message,_that.errorDetails);case CacheFailure() when cacheFailure != null:
+return cacheFailure(_that.message);case NetworkFailure() when networkFailure != null:
+return networkFailure(_that.message);case UnexpectedFailure() when unexpectedFailure != null:
+return unexpectedFailure(_that.message);case _:
+  return null;
+
+}
+}
+
+}
 
 /// @nodoc
 

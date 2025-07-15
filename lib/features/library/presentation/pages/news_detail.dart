@@ -1,12 +1,19 @@
+import 'dart:convert';
 import 'package:esl/core/shared/constants.dart';
 import 'package:esl/core/theme/app_theme.dart';
 import 'package:esl/core/util/url_utils.dart';
+import 'package:esl/features/auth/data/models/user_model.dart';
+import 'package:esl/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:esl/features/home/domain/entities/news.dart';
 import 'package:esl/features/home/presentation/widgets/notification_tile.dart';
+import 'package:esl/features/library/data/models/news_model.dart';
+import 'package:esl/features/program/presentation/widgets/custom_scroll_widget.dart';
 import 'package:esl/features/program/presentation/widgets/lexical_description_view.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 
 class NewsDetail extends StatefulWidget {
   final News? news;
@@ -18,9 +25,108 @@ class NewsDetail extends StatefulWidget {
 }
 
 class _NewsDetailState extends State<NewsDetail> {
+  final TextEditingController _commentController = TextEditingController();
+  bool _isPosting = false;
+  List<Comment> _comments = [];
+  final String baseUrl = 'http://95.217.186.227:4003/api';
+
   @override
   void initState() {
     super.initState();
+    _fetchComments();
+  }
+
+  Future<void> _fetchComments() async {
+    if (widget.news?.id == null) return;
+    try {
+      final url = Uri.parse('$baseUrl/news/${widget.news!.id}/comments');
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body)['data'] as List;
+        setState(() {
+          _comments = data
+              .map((e) => Comment.fromJson(e as Map<String, dynamic>))
+              .toList();
+        });
+      }
+    } catch (e) {
+      // Optionally show error
+    }
+  }
+
+  Future<void> _postComment() async {
+    final authState = context.read<AuthBloc>().state;
+    final comment = _commentController.text.trim();
+
+    if (comment.isEmpty || widget.news == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Comment cannot be empty.')));
+      return;
+    }
+
+    if (authState is! Authenticated) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please login to post a comment.')),
+      );
+      return;
+    }
+
+    setState(() => _isPosting = true);
+
+    try {
+      final url = Uri.parse('$baseUrl/news/comment/${widget.news!.id!}');
+      final Map<String, String> headers = {'Content-Type': 'application/json'};
+      final user = authState.user;
+      final Map<String, dynamic> body = {
+        'comment': comment,
+        'userId': user.id,
+        'firstName': user.firstName,
+        'lastName': user.lastName,
+        'email': user.email,
+        'phoneNumber': user.phoneNumber,
+        'role': user.role,
+      };
+
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> responseData =
+            jsonDecode(response.body) as Map<String, dynamic>;
+
+        if (responseData['success'] == true) {
+          _commentController.clear();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Comment posted successfully!')),
+          );
+          await _fetchComments(); // Refresh comments after posting
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                responseData['message'] as String? ?? 'Failed to post comment',
+              ),
+            ),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to post comment: ${response.statusCode}'),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+    } finally {
+      setState(() => _isPosting = false);
+    }
   }
 
   @override
@@ -215,9 +321,10 @@ class _NewsDetailState extends State<NewsDetail> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 600,
-                    child: LexicalDescriptionView(description: news.content)),
+                  ScrollableLexicalWidget(
+                    sourceMap: news.content ?? {},
+                    maxHeight: 1000,
+                  ),
 
                   const SizedBox(height: 20),
 
@@ -237,8 +344,10 @@ class _NewsDetailState extends State<NewsDetail> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
+                  // Post comment button
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _isPosting ? null : _postComment,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppConstants.eslGreenTint,
                       textStyle: const TextStyle(
@@ -250,8 +359,19 @@ class _NewsDetailState extends State<NewsDetail> {
                         horizontal: 12,
                       ),
                     ),
-                    child: const Text('Post Comment'),
+                    child: _isPosting
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text('Post Comment'),
                   ),
+                  const SizedBox(height: 20),
+
                   const SizedBox(height: 20),
 
                   // Comments List

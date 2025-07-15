@@ -1,10 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/material.dart';
-
 import 'package:esl/core/shared/constants.dart';
 import 'package:esl/core/theme/app_theme.dart';
 import 'package:esl/features/program/presentation/widgets/lexical_description_view.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
 
 class ProgramDetailCard extends StatelessWidget {
   const ProgramDetailCard({

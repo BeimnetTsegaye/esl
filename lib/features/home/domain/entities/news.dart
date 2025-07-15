@@ -12,7 +12,7 @@ class NewsCategory extends Equatable {
       category: json['category'] as String?,
     );
   }
-
+ 
   @override
   List<Object?> get props => [id, category];
 }

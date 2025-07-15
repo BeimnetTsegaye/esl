@@ -11,6 +11,7 @@ abstract class User with _$User {
     required String email,
     required String phoneNumber,
     required String role,
+    required String profilePicture,
   }) = _User;
   const User._();
 }

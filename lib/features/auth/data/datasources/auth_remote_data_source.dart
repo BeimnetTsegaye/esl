@@ -11,12 +11,16 @@ abstract class AuthRemoteDataSource {
   /// Throws a [ServerException] for all error codes.
   Future<UserModel> login(String email, String password, bool rememberMe);
 
-  
-
   /// Calls the register endpoint.
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<UserModel> signUp(String email, String password, String phoneNumber, String firstName, String lastName);
+  Future<UserModel> signUp(
+    String email,
+    String password,
+    String phoneNumber,
+    String firstName,
+    String lastName,
+  );
 
   /// Calls the logout endpoint.
   ///

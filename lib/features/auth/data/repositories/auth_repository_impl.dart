@@ -26,8 +26,17 @@ class AuthRepositoryImpl implements AuthRepository {
   ) async {
     if (await networkInfo.isConnected) {
       try {
-        final result = await remoteDataSource.signUp(email, password, phoneNumber, firstName, lastName);
-        // localDataSource.cacheUser(result);
+        final result = await remoteDataSource.signUp(
+          email,
+          password,
+          phoneNumber,
+          firstName,
+          lastName,
+        );
+
+        // ✅ Cache the newly signed-up user
+        await localDataSource.cacheUser(result);
+
         return Right(result.toEntity());
       } on ServerException catch (e) {
         return Left(
@@ -51,6 +60,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  @override
   Future<Either<Failure, User>> login(
     String email,
     String password,
@@ -63,7 +73,10 @@ class AuthRepositoryImpl implements AuthRepository {
           password,
           rememberMe,
         );
-        // localDataSource.cacheUser(result);
+
+        // ✅ Cache the logged-in user
+        await localDataSource.cacheUser(result);
+
         return Right(result.toEntity());
       } on ServerException catch (e) {
         return Left(
@@ -104,7 +117,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final result = await remoteDataSource.checkAuth();
       return Right(result.toEntity());
     } on ServerException catch (e) {
-      if (e.message.contains('No access token provided') == true || 
+      if (e.message.contains('No access token provided') == true ||
           e.message.contains('Unauthorized') == true) {
         try {
           final refreshResult = await refreshToken();
@@ -117,7 +130,10 @@ class AuthRepositoryImpl implements AuthRepository {
                 return Right(newResult.toEntity());
               } on ServerException catch (e) {
                 return Left(
-                  ServerFailure(message: e.message, errorDetails: e.errorDetails),
+                  ServerFailure(
+                    message: e.message,
+                    errorDetails: e.errorDetails,
+                  ),
                 );
               }
             }
@@ -135,19 +151,19 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, bool>> refreshToken() async {
-   try {
+    try {
       final result = await remoteDataSource.refreshToken();
       return Right(result);
     } on ServerException catch (e) {
       return Left(
         ServerFailure(message: e.message, errorDetails: e.errorDetails),
       );
-   }
+    }
   }
-  
+
   @override
   Future<Either<Failure, User>> loginWithGoogle() {
-      // TODO: implement loginWithGoogle
+    // TODO: implement loginWithGoogle
     throw UnimplementedError();
   }
 }
